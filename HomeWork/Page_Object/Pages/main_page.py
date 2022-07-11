@@ -4,6 +4,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from HomeWork.Page_Object.Pages.base_page import BasePage
 from HomeWork.Page_Object.Locators.main_locators import MainPageLoc
 from HomeWork.Page_Object.Locators.basket_locators import BasketPageLoc
+from HomeWork.Page_Object.Locators.contact_locators import ContactPageLoc
+
+main_link = "http://automationpractice.com/index.php"
 
 
 class MainPage(BasePage):
@@ -30,24 +33,18 @@ class MainPage(BasePage):
             EC.element_to_be_clickable(MainPageLoc.add_basket))
         basket_link.click()
 
-    def go_to_basket_page(self):
-        time.sleep(3)
-        go_to_basket_link = WebDriverWait(self.chrome, 20).until(
-            EC.element_to_be_clickable(MainPageLoc.go_basket))
-        go_to_basket_link.click()
-
     def close_field_with_add_thing(self):
         time.sleep(3)
         close_field = WebDriverWait(self.chrome, 20).until(
             EC.element_to_be_clickable(MainPageLoc.cross_loc))
         close_field.click()
 
-    def verify_go_basket(self):
-        assert self.is_element_present(MainPageLoc.go_basket)
-
-    def verify_item_basket(self):
-        assert self.is_element_present(BasketPageLoc.basket_item_loc)
-
     def verify_main_link_page(self):
         main_link_page = self.chrome.current_url
-        assert main_link_page == MainPageLoc.main_link_page
+        assert main_link_page == main_link
+
+    def open_basket_page(self):
+        time.sleep(3)
+        go_to_basket_link = WebDriverWait(self.chrome, 20).until(
+            EC.element_to_be_clickable(BasketPageLoc.open_basket))
+        go_to_basket_link.click()

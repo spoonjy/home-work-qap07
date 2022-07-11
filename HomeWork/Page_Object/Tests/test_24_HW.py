@@ -1,10 +1,10 @@
 import pytest
-
+import time
+from selenium import webdriver
 from HomeWork.Page_Object.Pages.login_page import LoginPage
 from HomeWork.Page_Object.Pages.main_page import MainPage
 from HomeWork.Page_Object.Pages.basket_page import BasketPage
-import time
-from selenium import webdriver
+from HomeWork.Page_Object.Pages.contact_page import ContactPage
 
 
 @pytest.fixture
@@ -47,7 +47,7 @@ def test_main_page(open_browser):
         main_page.open()
         main_page.verify_add_to_basket()
         main_page.close_field_with_add_thing()
-        main_page.go_to_basket_page()
+        main_page.open_basket_page()
         main_page.verify_item_basket()
         main_page = MainPage(browser, link)
         main_page.open()
@@ -76,7 +76,7 @@ def test_pages(open_browser):
 
     try:
         main_page.open()
-        main_page.go_to_basket_page()
+        main_page.open_basket_page()
         main_page.verify_basket_is_empty()
     finally:
         time.sleep(3)
@@ -88,11 +88,44 @@ def test_pages2(open_browser):
     main_page = MainPage(browser, link)
 
     try:
+        browser.maximize_window()
         main_page.open()
         main_page.open_login_page()
         main_page.verify_login_link()
         login_page = LoginPage(browser, url=browser.current_url)
         login_page.verify_login_link()
+    finally:
+        time.sleep(3)
+        browser.quit()
+
+
+def test_contact_page(open_browser):
+    link = "http://automationpractice.com/index.php"
+    main_page = MainPage(browser, link)
+
+    try:
+        browser.maximize_window()
+        main_page.open()
+        contact_page = ContactPage(browser, url=browser.current_url)
+        contact_page.open_contact_page()
+        contact_page.verify_text()
+    finally:
+        time.sleep(3)
+        browser.quit()
+
+
+# HW Lesson 25
+def test_open_basket_page(open_browser):
+    link = "http://automationpractice.com/index.php"
+    main_page = MainPage(browser, link)
+
+    try:
+        browser.maximize_window()
+        main_page.open()
+        main_page.open_basket_page()
+        basket_page = BasketPage(browser, url=browser.current_url)
+        basket_page.verify_basket_link_page()
+        basket_page.verify_basket_title()
     finally:
         time.sleep(3)
         browser.quit()
